@@ -25,7 +25,7 @@ def fillform(elem, page_index, elem_index):
     return result
 
 def main(url):
-    if 'docs.google.com/forms/d/e/' or '/viewform' not in url:
+    if 'docs.google.com/forms/d/e/' not in url or '/viewform' not in url:
         print(Fore.BLACK + Back.RED + Style.BRIGHT + f'Invalid url format!')
         print(Fore.RED + 'Correct url format: https://docs.google.com/forms/d/e/.../viewform')
         return
