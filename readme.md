@@ -16,3 +16,5 @@ Usage:
 `
 
 Random strings will be placed in elements that require text responses. If you want to customize text responses, please specify them in `responses.txt`
+
+Powered by [vvd170501/python-gforms](https://github.com/vvd170501/python-gforms)
