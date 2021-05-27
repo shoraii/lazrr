@@ -25,6 +25,7 @@ Powered by [vvd170501/python-gforms](https://github.com/vvd170501/python-gforms)
 So, we use libfuzzer to generate random inputs.
 
 Installation:
+
 `
     sudo apt-get install clang
 `
@@ -44,5 +45,5 @@ Set the google form address in gform.txt. Set the initial corpus for libfuzzer i
 Launch lazrr with:
 
 `
-   ./lazrr --jobs=1 --workers=1 corpus --only_ascii=1 -reduce_inputs=0 --len_control=0
+   ./lazrr --jobs=1 --workers=1 corpus --only_ascii=1 --reduce_inputs=0 --len_control=0
 ` 
