@@ -33,18 +33,22 @@ def main(url, fuzzed=False):
     form.load()
     print(Fore.BLACK + Back.CYAN + Style.BRIGHT + f'Loaded form {form.title}')
     filled = 0
-    while True:
-        try:
-            form.fill(fillform)
-            form.submit()
-        except Exception as e:
-            print(Fore.RED + f'Failed to fill: {str(e)}')
-        else:
-            filled += 1
-            print(Fore.CYAN + f'Filled {filled} forms!')
-        time.sleep(0.1)
-        if fuzzed:
-            break
+    try:
+        while True:
+            try:
+                form.fill(fillform)
+                form.submit()
+            except Exception as e:
+                print(Fore.RED + f'Failed to fill: {str(e)}')
+            else:
+                filled += 1
+                print(Fore.CYAN + f'Filled {filled} forms!', end='\r')
+            time.sleep(0.1)
+            if fuzzed:
+                break
+    except KeyboardInterrupt:
+        print(Fore.CYAN + Style.BRIGHT + f'Filled {filled} forms, exiting...')
+        exit(0)
 
 if __name__ == '__main__':
     colorama.init(autoreset=True)
