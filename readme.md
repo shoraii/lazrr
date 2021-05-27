@@ -39,7 +39,7 @@ Compilation:
 
 Usage:
 
-Set the google form address in gform.txt. Set the initial corpus for libfuzzer in corpus directory. libfuzzer will generate random responses based on files in corpus. By default the corpus consists of `responses[sample].txt`.s
+Set the google form address in gform.txt. Set the initial corpus for libfuzzer in corpus directory. libfuzzer will generate random responses based on files in corpus. By default the corpus consists of `responses[sample].txt` with some additions.
 
 Launch lazrr with:
 
