@@ -24,7 +24,7 @@ def fillform(elem, page_index, elem_index):
             raise NotImplementedError(f'Cannot fill {elem._type_str()}')
     return result
 
-def main(url):
+def main(url, fuzzed=False):
     if 'docs.google.com/forms/d/e/' not in url or '/viewform' not in url:
         print(Fore.BLACK + Back.RED + Style.BRIGHT + f'Invalid url format!')
         print(Fore.RED + 'Correct url format: https://docs.google.com/forms/d/e/.../viewform')
@@ -43,6 +43,8 @@ def main(url):
             filled += 1
             print(Fore.CYAN + f'Filled {filled} forms!')
         time.sleep(0.1)
+        if fuzzed:
+            break
 
 if __name__ == '__main__':
     colorama.init(autoreset=True)
@@ -57,5 +59,12 @@ if __name__ == '__main__':
         'url',
         action='store',
         help='url (https://docs.google.com/forms/d/e/.../viewform)')
+    parser.add_argument(
+        '--fuzzed',
+        default=False,
+        required=False,
+        action='store',
+        help='Set to True if you are using libfuzzer')
     args = parser.parse_args()
-    main(args.url)
+    main(args.url, args.fuzzed)
+    	
