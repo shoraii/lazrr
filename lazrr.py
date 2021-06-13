@@ -29,8 +29,8 @@ def main(url, fuzzed=False):
         print(Fore.BLACK + Back.RED + Style.BRIGHT + f'Invalid url format!')
         print(Fore.RED + 'Correct url format: https://docs.google.com/forms/d/e/.../viewform')
         return
-    form = Form(url)
-    form.load()
+    form = Form()
+    form.load(url)
     print(Fore.BLACK + Back.CYAN + Style.BRIGHT + f'Loaded form {form.title}')
     filled = 0
     try:
