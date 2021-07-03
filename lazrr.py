@@ -5,10 +5,13 @@ from gforms import Form
 from gforms.elements import default_callback, Short, Paragraph
 from os.path import exists
 from random import choice
+from math import inf
 import time
+import threading
 import string
 
 responses = []
+total_filled = 0
 
 def randstr(size):
     return ''.join(choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -24,7 +27,23 @@ def fillform(elem, page_index, elem_index):
             raise NotImplementedError(f'Cannot fill {elem._type_str()}')
     return result
 
-def main(url, fuzzed=False):
+def thread_fill(form, cooldown, fuzzed=False, limit=inf):
+    global total_filled
+    while total_filled < limit:
+        try:
+            form.fill(fillform)
+            form.submit()
+        except Exception as e:
+            print(Fore.RED + f'Failed to fill: {str(e)}')
+        else:
+            total_filled += 1
+            print(Fore.CYAN + f'Filled {total_filled} forms!', end='\r')
+        time.sleep(cooldown)
+        if fuzzed:
+            break
+
+def main(url, threads=4, fuzzed=False, cooldown=0.0, limit=inf):
+    global total_filled
     if 'docs.google.com/forms/d/e/' not in url or '/viewform' not in url:
         print(Fore.BLACK + Back.RED + Style.BRIGHT + f'Invalid url format!')
         print(Fore.RED + 'Correct url format: https://docs.google.com/forms/d/e/.../viewform')
@@ -32,23 +51,11 @@ def main(url, fuzzed=False):
     form = Form()
     form.load(url)
     print(Fore.BLACK + Back.CYAN + Style.BRIGHT + f'Loaded form {form.title}')
-    filled = 0
-    try:
-        while True:
-            try:
-                form.fill(fillform)
-                form.submit()
-            except Exception as e:
-                print(Fore.RED + f'Failed to fill: {str(e)}')
-            else:
-                filled += 1
-                print(Fore.CYAN + f'Filled {filled} forms!', end='\r')
-            time.sleep(0.1)
-            if fuzzed:
-                break
-    except KeyboardInterrupt:
-        print(Fore.CYAN + Style.BRIGHT + f'Filled {filled} forms, exiting...')
-        exit(0)
+    if fuzzed:
+        thread_fill(form, cooldown, fuzzed, limit)
+    
+    for _ in range(threads):
+        threading.Thread(target=thread_fill, args=(form, cooldown, False, limit)).start()
 
 if __name__ == '__main__':
     colorama.init(autoreset=True)
@@ -64,11 +71,31 @@ if __name__ == '__main__':
         action='store',
         help='url (https://docs.google.com/forms/d/e/.../viewform)')
     parser.add_argument(
+        '-t',
+        default=4,
+        required=False,
+        action='store',
+        help='Number of threads (4 by default)')
+    parser.add_argument(
         '--fuzzed',
         default=False,
         required=False,
         action='store',
         help='Set to True if you are using libfuzzer')
+    parser.add_argument(
+        '--cooldown',
+        default=0.0,
+        required=False,
+        action='store',
+        help='Set cooldown for form filling')
+    parser.add_argument(
+        '-f',
+        default=inf,
+        required=False,
+        action='store',
+        help='Set the limit of filled forms')
     args = parser.parse_args()
-    main(args.url, args.fuzzed)
-    	
+    args.t = int(args.t)
+    args.cooldown = float(args.cooldown)
+    args.f = float(args.f)
+    main(args.url, args.t, args.fuzzed, args.cooldown, args.f)
