@@ -9,11 +9,19 @@ Installation:
     pip3 install -r requirements.txt
 `
 
-Usage:
+Examples:
 
-`
-    python3 lazrr.py https://docs.google.com/forms/d/e/.../viewform
-`
+- Fill infinitely many forms using default amount of threads (which is 4):
+
+    `
+        python3 lazrr.py https://docs.google.com/forms/d/e/.../viewform
+    `
+
+- Fill at least 777 forms using 10 threads:
+
+    `
+        python3 lazrr.py -t 10 -f 777 https://docs.google.com/forms/d/e/.../viewform
+    `
 
 Random strings will be placed in elements that require text responses. If you want to customize text responses, please specify them in `responses.txt`
 
