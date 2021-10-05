@@ -44,7 +44,7 @@ def thread_fill(form, cooldown, fuzzed=False, limit=inf):
 
 def main(url, threads=4, fuzzed=False, cooldown=0.0, limit=inf):
     global total_filled
-    if 'docs.google.com/forms/d/e/' not in url or '/viewform' not in url:
+    if 'docs.google.com/forms/d/' not in url or '/viewform' not in url:
         print(Fore.BLACK + Back.RED + Style.BRIGHT + f'Invalid url format!')
         print(Fore.RED + 'Correct url format: https://docs.google.com/forms/d/e/.../viewform')
         return
@@ -53,7 +53,7 @@ def main(url, threads=4, fuzzed=False, cooldown=0.0, limit=inf):
     print(Fore.BLACK + Back.CYAN + Style.BRIGHT + f'Loaded form {form.title}')
     if fuzzed:
         thread_fill(form, cooldown, fuzzed, limit)
-    
+
     for _ in range(threads):
         threading.Thread(target=thread_fill, args=(form, cooldown, False, limit)).start()
 
