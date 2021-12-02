@@ -1,11 +1,16 @@
 import argparse
+
 import colorama
 from colorama import Fore, Back, Style
+
 from gforms import Form
-from gforms.elements import default_callback, Short, Paragraph
+from gforms.elements import default_callback, Short, Paragraph, Date, DateTime
+
 from os.path import exists
-from random import choice
+from random import choice, randint
+from datetime import date, datetime
 from math import inf
+
 import time
 import threading
 import string
@@ -23,6 +28,10 @@ def fillform(elem, page_index, elem_index):
     except:
         if isinstance(elem, Short) or isinstance(elem, Paragraph):
             result = choice(responses)
+        if isinstance(elem, Date):
+            result = date(randint(2069), randint(1, 12), randint(1, 28))
+        if isinstance(elem, DateTime):
+            result = datetime.now()
         else:
             raise NotImplementedError(f'Cannot fill {elem._type_str()}')
     return result
