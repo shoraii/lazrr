@@ -29,7 +29,7 @@ def fillform(elem, page_index, elem_index):
         if isinstance(elem, Short) or isinstance(elem, Paragraph):
             result = choice(responses)
         if isinstance(elem, Date):
-            result = date(randint(2069), randint(1, 12), randint(1, 28))
+            result = date(randint(1, 2069), randint(1, 12), randint(1, 28))
         if isinstance(elem, DateTime):
             result = datetime.now()
         else:
