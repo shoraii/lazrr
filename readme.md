@@ -1,12 +1,14 @@
 # lazrr
 > 'Destroy Them With Lazers' - Knife Party, 2011
 
-Google Forms autofill script
+lazrr is a script that fills Google Forms automatically.
 
 Installation:
 
+**⚠️ Python 3.9 is required**
+
 `
-    pip3 install -r requirements.txt
+    python3 -m pip install -r requirements.txt
 `
 
 Examples:
